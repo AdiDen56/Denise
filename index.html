@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Love</title>
+    <link rel="stylesheet" href="../style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #e6f9e7;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .envelope-container {
+            perspective: 1200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .envelope {
+            width: 440px;
+            height: 300px;
+            position: relative;
+            cursor: pointer;
+            margin-bottom: 28px;
+        }
+        .envelope-flap {
+            width: 440px;
+            height: 170px;
+            background: #b7eacb;
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 0 0 220px 220px/0 0 170px 170px;
+            transform-origin: top center;
+            transition: transform 1s cubic-bezier(.77,0,.18,1);
+            z-index: 2;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .envelope.open .envelope-flap {
+            transform: rotateX(-120deg);
+        }
+        .envelope-body {
+            width: 440px;
+            height: 270px;
+            background: #d2f5e3;
+            position: absolute;
+            top: 30px;
+            left: 0;
+            border-radius: 0 0 22px 22px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.10);
+            z-index: 1;
+        }
+        .card {
+            width: 380px;
+            height: 240px;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+            position: absolute;
+            top: 60px;
+            left: 30px;
+            opacity: 0;
+            transform: translateY(40px) scale(0.95);
+            transition: opacity 0.7s 0.5s, transform 0.7s 0.5s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            z-index: 3;
+            padding: 24px 18px 18px 18px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #b7eacb #e6f9e7;
+        }
+        .card::-webkit-scrollbar {
+            width: 8px;
+        }
+        .card::-webkit-scrollbar-thumb {
+            background: #b7eacb;
+            border-radius: 8px;
+        }
+        .card::-webkit-scrollbar-track {
+            background: #e6f9e7;
+            border-radius: 8px;
+        }
+        .envelope.open .card {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        .card h2 {
+            color: #6bbf7c;
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+        .card p {
+            color: #4a6b57;
+            font-size: 1.1rem;
+            text-align: center;
+            margin: 0 10px;
+        }
+        .open-text {
+            color: #6bbf7c;
+            font-size: 1.1rem;
+            margin-top: 12px;
+            text-align: center;
+            opacity: 0.8;
+        }
+        .flying-heart {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            transform: translate(-50%, 0);
+            pointer-events: none;
+            opacity: 0;
+            z-index: 10;
+        }
+        .flying-heart.animated {
+            animation: flyHeart 1.4s cubic-bezier(.77,0,.18,1) forwards;
+        }
+        @keyframes flyHeart {
+            0% {
+                opacity: 1;
+                transform: translate(-50%, 0) scale(1);
+            }
+            60% {
+                opacity: 1;
+                transform: translate(-50%, -120px) scale(1.2);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -200px) scale(0.8);
+            }
+        }
+        .envelope-label {
+            position: absolute;
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.1rem;
+            color: #6bbf7c;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.07);
+            pointer-events: none;
+            user-select: none;
+            white-space: nowrap;
+            z-index: 3;
+        }
+        @media (max-width: 900px) {
+            .envelope, .envelope-flap, .envelope-body {
+                width: 80vw;
+                max-width: 440px;
+            }
+            .card {
+                width: 70vw;
+                max-width: 380px;
+                max-height: 40vh;
+            }
+            .envelope-label {
+                font-size: 1.5rem;
+            }
+        }
+        @media (max-width: 600px) {
+            .envelope, .envelope-flap, .envelope-body {
+                width: 98vw;
+                max-width: 98vw;
+                min-width: 0;
+            }
+            .card {
+                width: 90vw;
+                max-width: 90vw;
+                left: 4vw;
+                top: 12vw;
+                height: auto;
+                min-height: 180px;
+                max-height: 50vh;
+                padding: 14px 6vw 14px 6vw;
+            }
+            .card h2 {
+                font-size: 1.2rem;
+            }
+            .card p {
+                font-size: 1rem;
+            }
+            .open-text {
+                font-size: 1rem;
+            }
+            .envelope-label {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="envelope-container">
+        <div class="flying-heart" id="flyingHeart">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M24 43s-1.45-1.32-3.6-3.13C12.2 33.13 4 26.36 4 18.5 4 12.15 9.15 7 15.5 7c3.54 0 6.68 1.74 8.5 4.44C25.82 8.74 28.96 7 32.5 7 38.85 7 44 12.15 44 18.5c0 7.86-8.2 14.63-16.4 21.37C25.45 41.68 24 43 24 43z" fill="#ff6b81"/>
+            </svg>
+        </div>
+        <div class="envelope" id="envelope">
+            <div class="envelope-flap"></div>
+            <div class="envelope-body"></div>
+            <div class="envelope-label">To: My Love</div>
+            <div class="card">
+                <h2>For My One and Only Babi</h2>
+                <p>
+                    My bebe,
+                    <br><br>
+                    Hello babi! I hope you know how much I appreciate you like I'm always always thankful and grateful for being with you. This past few months have been so special with you and I can't wait to create more memories with a person like you, I hope that we always work things together and change in ways for the better. Each day feels better when I'm with you from our very first date to now.
+Just trust me babi this is just the beginning of our journey together, a bright future awaits us hehe. Ngayon lang actually nag sink in saakin but grabe pala talaga yung differences ko before we met and now kaya im very very thankful babi! Mwaa!
+                    <br><br>
+                    Yours forever,<br>
+                    Adi
+                </p>
+            </div>
+        </div>
+        <div class="open-text">Click me po!</div>
+    </div>
+    <script>
+        const envelope = document.getElementById('envelope');
+        const flyingHeart = document.getElementById('flyingHeart');
+        envelope.addEventListener('click', function() {
+            envelope.classList.add('open');
+            flyingHeart.classList.add('animated');
+            setTimeout(() => {
+                flyingHeart.classList.remove('animated');
+            }, 1500);
+        }, { once: true });
+    </script>
+</body>
+</html>
